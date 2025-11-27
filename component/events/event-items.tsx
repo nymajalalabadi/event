@@ -34,7 +34,6 @@ export default function EventItem(props: { id: string, title: string, image: str
       </div>
     </div>
     <div className={classes.actions}>
-      
       <Button href={exploreLink}>
         <span>Explore Event</span>
         <span className={classes.icon}>
