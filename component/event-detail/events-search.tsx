@@ -3,7 +3,7 @@ import Button from '../ui/button';
 
 export default function EventsSearch({ props }) {
   return (
-    <form onSubmit={props.onSearch} className={classes.form}>
+    <form className={classes.form}>
         <div className={classes.controls}>
             <div className={classes.control}>
                 <label htmlFor="year">Year</label>
