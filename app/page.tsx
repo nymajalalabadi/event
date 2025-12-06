@@ -1,13 +1,11 @@
-import { getFeaturedEvents } from '../dummy-data';
 import EventList from '../component/events/event-list';
-import classes from '../styles/main-header.module.css';
+import { getFeaturedEvents } from '../helpers/api-util';
 
-export default function HomePage() {
-  const featuredEvents = getFeaturedEvents();
+export default async function HomePage() {
+  const featuredEvents = await getFeaturedEvents();
   return (
-  <div className={classes.container}>
-    <h1 className={classes.title}>Featured Events</h1>
-    <EventList items={featuredEvents} />
-  </div>
+   <div>
+      <EventList items={featuredEvents} />
+    </div>
   )
 }
