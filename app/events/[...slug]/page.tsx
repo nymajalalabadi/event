@@ -4,6 +4,7 @@ import EventList from '@/component/events/event-list';
 import { useParams } from 'next/navigation';
 import useSWR from 'swr';
 import { getFilteredEvents } from '../../../helpers/api-util';
+import Head from 'next/head';
 
 export default function FilteredEventsPage() {
   const params = useParams();
@@ -51,6 +52,10 @@ export default function FilteredEventsPage() {
 
   return (
     <div>
+      <Head>
+        <title>Filtered Events {numYear} {numMonth}</title>
+        <meta name="description" content={`Filtered events for ${numYear} ${numMonth}`} />
+      </Head>
       <EventList items={filteredEvents} />
     </div>
   );

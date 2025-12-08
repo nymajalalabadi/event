@@ -6,6 +6,7 @@ import EventSummary from '../../../component/event-detail/event-summary';
 import EventLogistics from '../../../component/event-detail/event-logistics';
 import EventContent from '../../../component/event-detail/event-content';
 import { getEventById } from '../../../helpers/api-util';
+import Head from 'next/head';
 
 interface Event {
   id: string;
@@ -53,6 +54,10 @@ export default function EventDetailPage() {
 
   return (
     <Fragment>
+      <Head>
+        <title>{event.title}</title>
+        <meta name="description" content={event.description} />
+      </Head>
       <EventSummary title={event.title} />
       <EventLogistics date={event.date} address={event.location} image={event.image} imageAlt={event.title} />
       <EventContent>
