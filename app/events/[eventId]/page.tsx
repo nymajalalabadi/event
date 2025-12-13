@@ -7,6 +7,7 @@ import EventLogistics from '../../../component/event-detail/event-logistics';
 import EventContent from '../../../component/event-detail/event-content';
 import { getEventById } from '../../../helpers/api-util';
 import Head from 'next/head';
+import Comments from '../../../component/input/comments';
 
 interface Event {
   id: string;
@@ -63,6 +64,7 @@ export default function EventDetailPage() {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </Fragment>
   );
 }
