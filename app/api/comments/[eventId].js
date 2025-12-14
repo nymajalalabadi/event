@@ -1,7 +1,10 @@
+import { MongoClient } from 'mongodb';
 
 export async function handler(req, res) {
 
     const eventId = req.query.eventId;
+
+    const client = await MongoClient.connect('mongodb+srv://nima:test123@cluster0.q2qrhzb.mongodb.net/events?appName=Cluster0');
 
     if (req.method === 'POST') {
         const { email, name, text } = req.body;
@@ -10,9 +13,20 @@ export async function handler(req, res) {
             return res.status(422).json({ message: 'Invalid input.' });
         }
 
-        console.log(eventId, email, name, text);
+        const newComment = {
+            email,
+            name,
+            text,
+            eventId
+        }
 
-        return res.status(201).json({ message: 'Comment added!' });
+        const db = client.db();
+        const commentsCollection = db.collection('comments');
+        await commentsCollection.insertOne(newComment);
+
+        newComment.id = result.insertedId;
+
+        return res.status(201).json({ message: 'Comment added!', comment: newComment });
     }
 
     if (req.method === 'GET') {
@@ -24,7 +38,7 @@ export async function handler(req, res) {
         return res.status(200).json({ comments: dummyList });
     }
 
+    client.close();
+
     return new Response('Method not allowed', { status: 405 });
 }
-
-nrxSKyjgdVLYfRD5

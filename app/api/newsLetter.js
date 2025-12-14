@@ -9,7 +9,7 @@ export async function handler(req, res) {
          return;
         }
 
-        const client = await MongoClient.connect('mongodb+srv://nima:test123@cluster0.q2qrhzb.mongodb.net/?appName=Cluster0');
+        const client = await MongoClient.connect('mongodb+srv://nima:test123@cluster0.q2qrhzb.mongodb.net/events?appName=Cluster0');
 
         const db = client.db();
 
