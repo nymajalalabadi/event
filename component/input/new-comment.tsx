@@ -9,7 +9,7 @@ function NewComment(props) {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
-  function sendCommentHandler(event) {
+  function sendCommentHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current?.value;
@@ -37,7 +37,7 @@ function NewComment(props) {
   }
 
   return (
-    <form className={classes.form}>
+    <form className={classes.form} onSubmit={sendCommentHandler}>
       <div className={classes.row}>
         <div className={classes.control}>
           <label htmlFor='email'>Your email</label>

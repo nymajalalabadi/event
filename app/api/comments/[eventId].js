@@ -1,3 +1,4 @@
+
 export async function handler(req, res) {
 
     const eventId = req.query.eventId;
@@ -25,3 +26,5 @@ export async function handler(req, res) {
 
     return new Response('Method not allowed', { status: 405 });
 }
+
+nrxSKyjgdVLYfRD5
