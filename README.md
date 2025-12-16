@@ -1,6 +1,6 @@
 # Events App
 
-A modern event management application built with Next.js 16, TypeScript, and Tailwind CSS. Browse featured events, filter events by date, and view detailed event information.
+A modern full-stack event management application built with Next.js 16, TypeScript, Tailwind CSS, MongoDB, Firebase, and SWR. Browse featured events, filter events by date, view detailed event information, interact with comments, and subscribe to newsletters.
 
 ## 🚀 Features
 
@@ -8,14 +8,20 @@ A modern event management application built with Next.js 16, TypeScript, and Tai
 - **Event Browsing**: View all available events in a clean, organized layout
 - **Date Filtering**: Filter events by year and month using an intuitive search interface
 - **Event Details**: View comprehensive information about individual events including location, date, and description
+- **Interactive Comments**: Add and view comments for each event with real-time updates
+- **Newsletter Subscription**: Subscribe to newsletter with email validation and MongoDB storage
 - **Responsive Design**: Optimized for all device sizes with Tailwind CSS
 - **TypeScript**: Full type safety throughout the application
+- **Data Caching**: SWR-powered client-side caching and revalidation for optimal performance
 
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Databases**: MongoDB (Comments & Newsletter), Firebase Realtime Database (Events)
+- **Data Fetching**: SWR for client-side caching and revalidation
+- **API**: Next.js API Routes
 - **Icons**: Custom SVG components
 - **Build Tool**: Next.js built-in compiler
 
@@ -24,6 +30,10 @@ A modern event management application built with Next.js 16, TypeScript, and Tai
 ```
 event/
 ├── app/                    # Next.js App Router
+│   ├── api/               # API Routes
+│   │   ├── comments/      # Comment management
+│   │   │   └── [eventId].js
+│   │   └── newsLetter.js  # Newsletter subscription
 │   ├── events/            # Events pages
 │   │   ├── page.tsx       # All events listing
 │   │   ├── [eventId]/     # Individual event details
@@ -35,9 +45,17 @@ event/
 ├── component/             # Reusable components
 │   ├── event-detail/      # Event detail components
 │   ├── events/            # Event listing components
+│   ├── input/             # Form and input components
+│   │   ├── comment-list.tsx     # Comments display
+│   │   ├── comments.tsx         # Comment form
+│   │   ├── new-comment.tsx      # New comment component
+│   │   └── newsletter-registration.tsx # Newsletter signup
 │   ├── icons/             # Custom SVG icons
 │   ├── layout/            # Layout components
 │   └── ui/                # UI components
+├── helpers/               # Utility functions
+│   ├── api-util.js        # Firebase API utilities
+│   └── db-util.js         # MongoDB utilities
 ├── dummy-data.js          # Mock event data
 ├── public/                # Static assets
 │   └── images/            # Event images
@@ -82,6 +100,29 @@ bun dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## 🔧 Environment Setup
+
+### Database Configuration
+
+1. **Firebase Realtime Database**:
+   - Create a Firebase project at https://console.firebase.google.com/
+   - Enable Realtime Database
+   - Set database rules to allow read/write operations
+   - Populate events data in the database
+
+2. **MongoDB**:
+   - Create a MongoDB Atlas cluster or use local MongoDB
+   - Get your connection string
+   - Update `helpers/db-util.js` with your MongoDB connection string
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+```
+
 ## 📱 Usage
 
 ### Navigation
@@ -89,13 +130,19 @@ bun dev
 - **Homepage** (`/`): View featured events
 - **All Events** (`/events`): Browse all events with filtering capability
 - **Filtered Events** (`/events/2021/5`): View events filtered by year and month
-- **Event Details** (`/events/e1`): View detailed information about a specific event
+- **Event Details** (`/events/e1`): View detailed information about a specific event including comments
 
 ### Filtering Events
 
 1. Go to `/events`
 2. Select a year and month from the dropdown menus
 3. Click "Find Events" to filter the results
+
+### Interacting with Events
+
+1. **View Event Details**: Click on any event to see full details
+2. **Add Comments**: Use the comment form on event detail pages
+3. **Subscribe to Newsletter**: Enter your email in the newsletter form
 
 ## 🏗️ Available Scripts
 
@@ -115,7 +162,11 @@ npm run lint     # Run ESLint
 - **EventsSearch**: Year/month filtering interface
 - **EventSummary**: Event title display
 - **EventLogistics**: Event date, location, and image
-- **EventContent**: Event description
+- **EventContent**: Event description and comments section
+- **Comments**: Interactive comment form for adding new comments
+- **CommentList**: Displays user comments for events
+- **NewComment**: New comment form component
+- **NewsletterRegistration**: Email subscription form with validation
 - **Button**: Reusable button component
 
 ### Layout Components
@@ -125,8 +176,7 @@ npm run lint     # Run ESLint
 
 ## 📊 Data Structure
 
-Events include the following properties:
-
+### Events (Firebase Realtime Database)
 ```typescript
 {
   id: string;
@@ -139,6 +189,26 @@ Events include the following properties:
 }
 ```
 
+### Comments (MongoDB)
+```typescript
+{
+  _id: ObjectId;
+  eventId: string;
+  name: string;
+  text: string;
+  createdAt: Date;
+}
+```
+
+### Newsletter (MongoDB)
+```typescript
+{
+  _id: ObjectId;
+  email: string;
+  createdAt: Date;
+}
+```
+
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
@@ -147,7 +217,9 @@ The easiest way to deploy is using Vercel:
 
 1. Push your code to GitHub
 2. Connect your repository to Vercel
-3. Deploy automatically
+3. Add environment variables in Vercel dashboard:
+   - `MONGODB_URI`: Your MongoDB connection string
+4. Deploy automatically
 
 ### Other Platforms
 
@@ -157,6 +229,17 @@ This app can be deployed to any platform supporting Next.js:
 npm run build
 npm run start
 ```
+
+Make sure to configure environment variables for MongoDB connection.
+
+## 🛠️ API Endpoints
+
+### Comments API
+- `GET /api/comments/[eventId]` - Get all comments for an event
+- `POST /api/comments/[eventId]` - Add a new comment to an event
+
+### Newsletter API
+- `POST /api/newsletter` - Subscribe to newsletter with email validation
 
 ## 🤝 Contributing
 
@@ -175,3 +258,6 @@ This project is for educational purposes and is available under the MIT License.
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [MongoDB Documentation](https://docs.mongodb.com/)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [SWR Documentation](https://swr.vercel.app/)
