@@ -1,5 +1,15 @@
 import { MongoClient } from 'mongodb';
 
+function connectToDatabase() {
+    return MongoClient.connect('mongodb+srv://nima:test123@cluster0.q2qrhzb.mongodb.net/events?appName=Cluster0');
+}
+
+async function insertDocument(client, document) {
+    const db = client.db();
+    const newsletterCollection = db.collection('newsletter');
+    await newsletterCollection.insertOne(document);
+}
+
 export async function handler(req, res) {
     if (req.method === 'POST') {
         const userEmail = req.body.email;
@@ -9,17 +19,26 @@ export async function handler(req, res) {
          return;
         }
 
-        const client = await MongoClient.connect('mongodb+srv://nima:test123@cluster0.q2qrhzb.mongodb.net/events?appName=Cluster0');
+        let client;
 
-        const db = client.db();
+        try {
+            client = await connectToDatabase();
+        } catch (error) {
+            res.status(500).json({ message: 'Connecting to the database failed!' + error });
+            return;
+        }
 
-        const newsletterCollection = db.collection('newsletter');
+        try {
+            await insertDocument(client, { email: userEmail });
+            client.close();
 
-        await newsletterCollection.insertOne({ email: userEmail });
-
-        client.close();
+        } catch (error) {
+            res.status(500).json({ message: 'Inserting data failed!' + error });
+            return;
+        }
 
         return res.status(201).json({ message: 'Signed up!' });
     }
-    return new Response('Method not allowed', { status: 405 });
+
+    return res.status(405).json({ message: 'Method not allowed' });
 }

@@ -5,8 +5,8 @@ function CommentList( props ) {
   return (
     <ul className={classes.comments}>
       {/* Render list of comments - fetched from API */}
-      {items.map((comment: { id: string, name: string, text: string }) => (
-        <li key={comment.id}>
+      {items.map((comment: { _id: string, name: string, text: string }) => (
+        <li key={comment._id}>
           <p>{comment.text}</p>
           <div>
             By <address>{comment.name}</address>
