@@ -1,14 +1,7 @@
-import { MongoClient } from 'mongodb';
 
-function connectToDatabase() {
-    return MongoClient.connect('mongodb+srv://nima:test123@cluster0.q2qrhzb.mongodb.net/events?appName=Cluster0');
-}
+import { connectToDatabase } from '../../helpers/db-util';
+import { insertDocument } from '../../helpers/db-util';
 
-async function insertDocument(client, document) {
-    const db = client.db();
-    const newsletterCollection = db.collection('newsletter');
-    await newsletterCollection.insertOne(document);
-}
 
 export async function handler(req, res) {
     if (req.method === 'POST') {
@@ -29,7 +22,7 @@ export async function handler(req, res) {
         }
 
         try {
-            await insertDocument(client, { email: userEmail });
+            await insertDocument(client, 'newsletter', { email: userEmail });
             client.close();
 
         } catch (error) {
