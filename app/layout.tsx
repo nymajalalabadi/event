@@ -1,6 +1,7 @@
 import classes from '../styles/main-header.module.css';
 import MainHeader from '../component/layout/main-header';
-import Head from 'next/head';
+import Notification from '../component/ui/notification';
+import { NotificationContextProvider } from '@/store/notifiaction-context';
 
 export const metadata = {
   title: 'NextJS Eventss',
@@ -15,10 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ margin: 0, padding: 0, overflowX: 'hidden' }} >
-        <MainHeader />
+        <NotificationContextProvider>
+          <MainHeader />
         <div className={classes.container} {...metadata} >
           {children}
         </div>
+        </NotificationContextProvider>
       </body>
     </html>
   );
