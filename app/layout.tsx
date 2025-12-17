@@ -1,6 +1,5 @@
 import classes from '../styles/main-header.module.css';
 import MainHeader from '../component/layout/main-header';
-import Notification from '../component/ui/notification';
 import { NotificationContextProvider } from '@/store/notifiaction-context';
 
 export const metadata = {
