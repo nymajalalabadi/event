@@ -9,6 +9,7 @@ A modern full-stack event management application built with Next.js 16, TypeScri
 - **Date Filtering**: Filter events by year and month using an intuitive search interface
 - **Event Details**: View comprehensive information about individual events including location, date, and description
 - **Interactive Comments**: Add and view comments for each event with real-time updates
+- **User Notifications**: Real-time notification system for user feedback (success, error, pending states)
 - **Newsletter Subscription**: Subscribe to newsletter with email validation and MongoDB storage
 - **Responsive Design**: Optimized for all device sizes with Tailwind CSS
 - **TypeScript**: Full type safety throughout the application
@@ -21,6 +22,7 @@ A modern full-stack event management application built with Next.js 16, TypeScri
 - **Styling**: Tailwind CSS
 - **Databases**: MongoDB (Comments & Newsletter), Firebase Realtime Database (Events)
 - **Data Fetching**: SWR for client-side caching and revalidation
+- **State Management**: React Context API for global notification state
 - **API**: Next.js API Routes
 - **Icons**: Custom SVG components
 - **Build Tool**: Next.js built-in compiler
@@ -53,12 +55,15 @@ event/
 │   ├── icons/             # Custom SVG icons
 │   ├── layout/            # Layout components
 │   └── ui/                # UI components
+│       ├── notification.tsx     # Notification display component
 ├── helpers/               # Utility functions
 │   ├── api-util.js        # Firebase API utilities
 │   └── db-util.js         # MongoDB utilities
 ├── dummy-data.js          # Mock event data
 ├── public/                # Static assets
 │   └── images/            # Event images
+├── store/                 # Global state management
+│   └── notifiaction-context.tsx # Notification context provider
 └── styles/                # CSS Modules
 ```
 
@@ -141,8 +146,9 @@ MONGODB_URI=your_mongodb_connection_string
 ### Interacting with Events
 
 1. **View Event Details**: Click on any event to see full details
-2. **Add Comments**: Use the comment form on event detail pages
-3. **Subscribe to Newsletter**: Enter your email in the newsletter form
+2. **Add Comments**: Use the comment form on event detail pages (notifications show submission status)
+3. **Subscribe to Newsletter**: Enter your email in the newsletter form (notifications confirm subscription)
+4. **Receive Feedback**: Get real-time notifications for all user actions
 
 ## 🏗️ Available Scripts
 
@@ -167,6 +173,7 @@ npm run lint     # Run ESLint
 - **CommentList**: Displays user comments for events
 - **NewComment**: New comment form component
 - **NewsletterRegistration**: Email subscription form with validation
+- **Notification**: User feedback notification component with status-based styling
 - **Button**: Reusable button component
 
 ### Layout Components
@@ -206,6 +213,15 @@ npm run lint     # Run ESLint
   _id: ObjectId;
   email: string;
   createdAt: Date;
+}
+```
+
+### Notifications (Context State)
+```typescript
+{
+  title: string;
+  message: string;
+  status: 'success' | 'error' | 'pending';
 }
 ```
 
@@ -258,6 +274,7 @@ This project is for educational purposes and is available under the MIT License.
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [React Context API](https://react.dev/learn/passing-data-deeply-with-context)
 - [MongoDB Documentation](https://docs.mongodb.com/)
 - [Firebase Documentation](https://firebase.google.com/docs)
 - [SWR Documentation](https://swr.vercel.app/)
